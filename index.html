@@ -435,6 +435,97 @@
 
     @media (max-width: 600px) { .carousel-btn { display: none; } }
 
+    /* ══════════════════════════════════
+       MOBILE — global responsive pass
+    ══════════════════════════════════ */
+    @media (max-width: 767px) {
+
+      /* ─ Sections: reduce vertical padding ─ */
+      .services, .gallery, .about, .testimonials, .booking, .info-section,
+      .map-section, .ig-strip { padding: 4rem 0; }
+      .cta-band { padding: 3.5rem 0; }
+
+      /* ─ Hero ─ */
+      .hero { padding-bottom: 4rem; min-height: 92svh; }
+      .hero-title { font-size: clamp(2.8rem, 13vw, 5rem); }
+      .hero-desc { font-size: .82rem; max-width: 100%; }
+      .hero-actions { flex-direction: column; align-items: flex-start; }
+      .hero-actions .btn { width: 100%; justify-content: center; }
+
+      /* ─ Section headers ─ */
+      .section-title { font-size: clamp(1.6rem, 7vw, 2.4rem); }
+      .section-sub { font-size: .82rem; }
+
+      /* ─ Stats ─ */
+      .stat-num { font-size: 1.5rem; }
+      .stat { padding: 1.4rem .5rem; }
+
+      /* ─ Services ─ */
+      .services-grid { grid-template-columns: 1fr 1fr; }
+      .service-card { padding: 1.6rem 1.2rem; }
+
+      /* ─ CTA band ─ */
+      .cta-band-text { font-size: 1.5rem; }
+      .cta-band-inner { flex-direction: column; gap: 1.5rem; }
+      .cta-band-actions { flex-direction: column; width: 100%; }
+      .cta-band-actions .btn { width: 100%; justify-content: center; }
+
+      /* ─ Carousel on mobile ─ */
+      .ig-carousel-track { padding: 0 4% 1.5rem; gap: 10px; }
+      .ig-card { width: 82vw; max-width: 300px; }
+      .ig-card-media { height: 78vw; max-height: 300px; }
+      .ig-card-media iframe { height: calc(78vw + 100px); max-height: 420px; margin-top: -58px; }
+      /* On touch: let the iframe be interactive so videos play */
+      .ig-card-media iframe { pointer-events: auto; }
+      /* Hide overlay on touch devices (tap goes to iframe/video) */
+      .ig-card-overlay { pointer-events: none; }
+      .ig-overlay-label { display: none; }
+
+      /* ─ About ─ */
+      .about-grid { gap: 3rem; }
+      .about-img-wrap { padding-bottom: 2.5rem; } /* room for accent image */
+      .about-img-accent { bottom: 0; right: 0; }
+      .about-float-badge { left: .5rem; }
+
+      /* ─ Testimonials ─ */
+      .test-grid { grid-template-columns: 1fr; }
+
+      /* ─ Booking ─ */
+      .booking-inner { gap: 3rem; }
+      .booking-title { font-size: clamp(1.8rem, 8vw, 3rem); }
+      .booking-form-box { padding: 1.8rem 1.2rem; }
+      .form-row { grid-template-columns: 1fr; }
+
+      /* ─ Info cards ─ */
+      .info-grid { grid-template-columns: 1fr; }
+
+      /* ─ Map ─ */
+      .map-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .map-embed { height: 280px; }
+
+      /* ─ Footer ─ */
+      .footer-top { flex-direction: column; gap: 2rem; }
+      .footer-bottom { flex-direction: column; text-align: center; gap: .5rem; }
+
+      /* ─ Floating WA: keep visible but smaller ─ */
+      .wa-float { width: 50px; height: 50px; bottom: 1.2rem; right: 1.2rem; }
+      .wa-float svg { width: 20px; height: 20px; }
+    }
+
+    @media (max-width: 480px) {
+      /* Single column services on very small phones */
+      .services-grid { grid-template-columns: 1fr; }
+      .hero-title { font-size: clamp(2.4rem, 12vw, 3.5rem); }
+      .btn { font-size: .7rem; padding: .78rem 1.4rem; }
+    }
+
+    /* Desktop-only: hover overlay on carousel (pointer:fine = mouse) */
+    @media (hover: hover) and (pointer: fine) {
+      .ig-card-media iframe { pointer-events: none; }
+      .ig-card-overlay { pointer-events: auto; }
+      .ig-overlay-label { display: flex; }
+    }
+
     /* ── MAP (FKN STYLE) ── */
     .map-section { padding: 6rem 0; background: var(--bg2); border-top: 1px solid var(--border); }
     .map-header { margin-bottom: 3rem; }
@@ -792,18 +883,6 @@
         </div>
       </div>
 
-      <!-- Card 8 — last video, same fixed dimensions -->
-      <div class="ig-card">
-        <div class="ig-card-header">
-          <img src="logo.svg" alt="" class="ig-card-avatar" />
-          <div class="ig-card-meta"><span class="ig-card-username">rotterdambarbershop_</span></div>
-          <svg class="ig-card-ig-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-        </div>
-        <div class="ig-card-media">
-          <iframe src="https://www.instagram.com/p/DQm0QvZj98X/embed/" loading="lazy" scrolling="no" allowtransparency="true"></iframe>
-          <a href="https://www.instagram.com/p/DQm0QvZj98X/" target="_blank" rel="noopener" class="ig-card-overlay"><div class="ig-overlay-label"><svg class="ig-overlay-icon" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>Ver en Instagram</div></a>
-        </div>
-      </div>
 
     </div>
 
@@ -822,7 +901,6 @@
       <div class="carousel-dot" data-idx="4"></div>
       <div class="carousel-dot" data-idx="5"></div>
       <div class="carousel-dot" data-idx="6"></div>
-      <div class="carousel-dot" data-idx="7"></div>
     </div>
   </div>
 </section>
@@ -1261,7 +1339,7 @@
 
     const cards = track.querySelectorAll('.ig-card');
     const dots = document.querySelectorAll('.carousel-dot');
-    const CARD_W = 314; // card 300px + gap 14px
+    const CARD_W = () => window.innerWidth < 640 ? track.querySelector('.ig-card').offsetWidth + 10 : 314;
     let current = 0;
     let autoTimer;
     const TOTAL = cards.length;
@@ -1272,7 +1350,7 @@
 
     function goTo(idx, smooth = true) {
       current = ((idx % TOTAL) + TOTAL) % TOTAL;
-      track.scrollTo({ left: current * CARD_W, behavior: smooth ? 'smooth' : 'instant' });
+      track.scrollTo({ left: current * CARD_W(), behavior: smooth ? 'smooth' : 'instant' });
       setActiveDot(current);
     }
 
@@ -1290,7 +1368,7 @@
     }));
 
     track.addEventListener('scroll', () => {
-      const idx = Math.round(track.scrollLeft / CARD_W);
+      const idx = Math.round(track.scrollLeft / CARD_W());
       if (idx !== current) { current = idx; setActiveDot(current); }
     }, { passive: true });
 
