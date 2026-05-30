@@ -55,35 +55,20 @@
     #loader.hide { animation: loaderOut .95s cubic-bezier(.76,0,.24,1) .2s forwards; }
     @keyframes loaderOut { to { transform: translateY(-100%); } }
 
-    .loader-scissors {
-      width: 72px; height: 72px; margin-bottom: 2rem;
-      opacity: 0; animation: fadeUp .7s ease .3s forwards;
+    .loader-logo-wrap {
+      opacity: 0; animation: logoIn 1s cubic-bezier(.34,1.1,.64,1) .3s forwards;
     }
-    .loader-scissors svg { width: 100%; height: 100%; }
+    .loader-logo-svg {
+      width: 160px; height: 160px;
+      filter: drop-shadow(0 0 28px rgba(201,168,76,.25)) drop-shadow(0 0 60px rgba(168,20,46,.15));
+    }
+    @keyframes logoIn {
+      from { opacity: 0; transform: scale(.8); }
+      to   { opacity: 1; transform: scale(1); }
+    }
 
-    .loader-brand {
-      font-family: var(--font-display); font-size: .6rem; letter-spacing: .65em;
-      text-transform: uppercase; color: rgba(242,237,228,.25);
-      opacity: 0; animation: fadeUp .6s ease .6s forwards;
-    }
-    .loader-name {
-      font-family: var(--font-display); font-size: 3rem; letter-spacing: .12em;
-      color: transparent; -webkit-text-stroke: 1px rgba(201,168,76,.4);
-      line-height: 1; text-transform: uppercase;
-      opacity: 0; animation: nameIn .9s cubic-bezier(.34,1.2,.64,1) .5s forwards;
-      position: relative;
-    }
-    .loader-name::after {
-      content: attr(data-text); position: absolute; inset: 0;
-      color: var(--primary); -webkit-text-stroke: 0;
-      clip-path: inset(100% 0 0 0);
-      animation: clipReveal .85s cubic-bezier(.4,0,.2,1) 1.1s forwards;
-    }
-    @keyframes nameIn { to { opacity: 1; } }
-    @keyframes clipReveal { to { clip-path: inset(0% 0 0 0); } }
-
-    .loader-bar-track { margin-top: 2.5rem; width: 100px; height: 1px; background: rgba(201,168,76,.12); overflow: hidden; opacity: 0; animation: fadeUp .4s ease 1.4s forwards; }
-    .loader-bar-fill { height: 100%; width: 0; background: linear-gradient(90deg, var(--accent), var(--primary), var(--primary-lt)); animation: barFill .9s ease 1.5s forwards; }
+    .loader-bar-track { margin-top: 2.8rem; width: 100px; height: 1px; background: rgba(201,168,76,.12); overflow: hidden; opacity: 0; animation: fadeUp .4s ease 1.1s forwards; }
+    .loader-bar-fill { height: 100%; width: 0; background: linear-gradient(90deg, var(--accent), var(--primary), var(--primary-lt)); animation: barFill .9s ease 1.2s forwards; }
     @keyframes barFill { to { width: 100%; } }
     @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
 
@@ -118,11 +103,9 @@
     .navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 200; padding: 1.5rem 0; transition: background .35s, padding .3s; }
     .navbar.scrolled { background: rgba(8,8,8,.96); backdrop-filter: blur(20px); padding: 1rem 0; border-bottom: 1px solid var(--border); }
     .nav-inner { display: flex; align-items: center; justify-content: space-between; }
-    .nav-logo { display: flex; align-items: center; gap: .75rem; line-height: 1; }
-    .nav-logo-img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
-    .nav-logo-text { display: flex; flex-direction: column; }
-    .nav-logo-name { font-family: var(--font-display); font-size: 1.4rem; letter-spacing: .14em; color: var(--primary); line-height: .9; }
-    .nav-logo-sub { font-size: .42rem; letter-spacing: .5em; text-transform: uppercase; color: rgba(237,232,223,.3); margin-top: .3rem; }
+    .nav-logo { display: flex; align-items: center; }
+    .nav-logo-img { width: 52px; height: 52px; object-fit: contain; flex-shrink: 0; transition: transform .3s ease; }
+    .nav-logo:hover .nav-logo-img { transform: scale(1.06); }
     .nav-links { display: flex; gap: 2.2rem; font-family: var(--font-display); font-size: .62rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; }
     .nav-links a { color: rgba(237,232,223,.55); transition: color .2s; }
     .nav-links a:hover { color: var(--primary); }
@@ -344,24 +327,39 @@
     .schedule-row span:last-child { font-family: var(--font-display); font-size: .75rem; letter-spacing: .06em; font-weight: 600; color: var(--text); }
 
     /* ── IG CAROUSEL ── */
-    .ig-carousel-wrap { position: relative; margin-top: 2.5rem; overflow: hidden; }
+    .ig-carousel-wrap { position: relative; margin-top: 2.5rem; }
     .ig-carousel-track {
       display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory;
       scrollbar-width: none; padding: 0 5% 1.5rem; -ms-overflow-style: none;
     }
     .ig-carousel-track::-webkit-scrollbar { display: none; }
-    .ig-slide { scroll-snap-align: start; flex-shrink: 0; width: 320px; }
+    .ig-slide {
+      scroll-snap-align: start; flex-shrink: 0;
+      width: 320px; position: relative; overflow: hidden; border-radius: 4px;
+    }
+    /* Gradient overlay that covers the bottom action bar + likes section */
+    .ig-slide::after {
+      content: ''; pointer-events: none; z-index: 20;
+      position: absolute; bottom: 0; left: 0; right: 0; height: 90px;
+      background: linear-gradient(to top, #000 55%, transparent 100%);
+      border-radius: 0 0 4px 4px;
+    }
     .ig-slide .instagram-media {
       background: #000 !important; border: 1px solid var(--border) !important;
-      border-radius: 4px !important; margin: 0 !important; min-width: 300px !important; max-width: 320px !important;
+      border-radius: 4px !important; margin: 0 !important;
+      min-width: 300px !important; max-width: 320px !important;
     }
+    /* Last slide (video) — wider to handle vertical video proportions */
+    .ig-slide.ig-video { width: 360px; }
+    .ig-slide.ig-video .instagram-media { min-width: 340px !important; max-width: 360px !important; }
+
     .carousel-btn {
       position: absolute; top: 45%; transform: translateY(-50%);
-      background: rgba(8,8,8,.92); backdrop-filter: blur(12px);
+      background: rgba(8,8,8,.88); backdrop-filter: blur(12px);
       border: 1px solid var(--border-lt); color: var(--primary);
-      width: 48px; height: 48px; border-radius: 2px; font-size: 1.5rem;
+      width: 48px; height: 48px; border-radius: 2px; font-size: 1.6rem; line-height: 1;
       display: flex; align-items: center; justify-content: center;
-      cursor: pointer; z-index: 10; transition: all .2s; font-family: var(--font-sans);
+      cursor: pointer; z-index: 30; transition: all .2s; font-family: var(--font-sans);
     }
     .carousel-btn:hover { border-color: var(--primary); background: var(--surface); }
     .carousel-prev { left: 1rem; }
@@ -450,11 +448,9 @@
 
 <!-- LOADER -->
 <div id="loader">
-  <div class="loader-scissors" style="border-radius:50%;overflow:hidden;width:90px;height:90px;">
-    <img src="logo.png" alt="Rotterdam BarberShop" style="width:100%;height:100%;object-fit:cover;" />
+  <div class="loader-logo-wrap">
+    <img src="logo.svg" alt="Rotterdam BarberShop" class="loader-logo-svg" />
   </div>
-  <div class="loader-brand">Barbería Masculina Premium</div>
-  <div class="loader-name" data-text="ROTTERDAM">ROTTERDAM</div>
   <div class="loader-bar-track"><div class="loader-bar-fill"></div></div>
 </div>
 
@@ -462,11 +458,7 @@
 <nav class="navbar" id="navbar">
   <div class="container nav-inner">
     <a href="#inicio" class="nav-logo">
-      <img src="logo.png" alt="Rotterdam" class="nav-logo-img" />
-      <div class="nav-logo-text">
-        <span class="nav-logo-name">ROTTERDAM</span>
-        <span class="nav-logo-sub">BarberShop</span>
-      </div>
+      <img src="logo.svg" alt="Rotterdam BarberShop" class="nav-logo-img" />
     </a>
     <ul class="nav-links">
       <li><a href="#servicios">Servicios</a></li>
@@ -657,8 +649,8 @@
       <div class="ig-slide">
         <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DP4C5cdDZAl/" data-instgrm-version="14" style="background:#000;border:1px solid #242424;border-radius:4px;margin:0;max-width:320px;min-width:300px;padding:0;width:100%;"></blockquote>
       </div>
-      <div class="ig-slide">
-        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DQm0QvZj98X/" data-instgrm-version="14" style="background:#000;border:1px solid #242424;border-radius:4px;margin:0;max-width:320px;min-width:300px;padding:0;width:100%;"></blockquote>
+      <div class="ig-slide ig-video">
+        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DQm0QvZj98X/" data-instgrm-version="14" style="background:#000;border:1px solid #242424;border-radius:4px;margin:0;max-width:360px;min-width:340px;padding:0;width:100%;"></blockquote>
       </div>
     </div>
     <button class="carousel-btn carousel-prev" id="prevBtn" aria-label="Anterior">‹</button>
@@ -939,13 +931,7 @@
   <div class="container">
     <div class="footer-top">
       <div class="footer-brand">
-        <div style="display:flex;align-items:center;gap:.8rem;margin-bottom:.6rem;">
-          <img src="logo.png" alt="Rotterdam" style="width:48px;height:48px;border-radius:50%;object-fit:cover;" />
-          <div>
-            <div class="footer-logo-name">ROTTERDAM</div>
-            <div class="footer-logo-sub">BarberShop</div>
-          </div>
-        </div>
+        <img src="logo.svg" alt="Rotterdam BarberShop" style="width:72px;height:72px;object-fit:contain;margin-bottom:.8rem;display:block;" />
         <p>Un espacio premium exclusivo para caballeros. Precisión, estilo y la mejor atención en cada visita.</p>
       </div>
       <div class="footer-col">
@@ -1103,12 +1089,35 @@
   /* ── CAROUSEL ── */
   const track = document.getElementById('carouselTrack');
   if (track) {
-    document.getElementById('prevBtn').addEventListener('click', () => {
-      track.scrollBy({ left: -340, behavior: 'smooth' });
-    });
-    document.getElementById('nextBtn').addEventListener('click', () => {
-      track.scrollBy({ left: 340, behavior: 'smooth' });
-    });
+    const slides = track.querySelectorAll('.ig-slide');
+    const SLIDE_W = 336; // slide width + gap
+    let current = 0;
+    let autoTimer;
+
+    function goTo(idx) {
+      current = (idx + slides.length) % slides.length;
+      track.scrollTo({ left: current * SLIDE_W, behavior: 'smooth' });
+    }
+
+    function startAuto() {
+      autoTimer = setInterval(() => goTo(current + 1), 4500);
+    }
+    function stopAuto() { clearInterval(autoTimer); }
+
+    document.getElementById('prevBtn').addEventListener('click', () => { stopAuto(); goTo(current - 1); startAuto(); });
+    document.getElementById('nextBtn').addEventListener('click', () => { stopAuto(); goTo(current + 1); startAuto(); });
+
+    track.addEventListener('mouseenter', stopAuto);
+    track.addEventListener('mouseleave', startAuto);
+    track.addEventListener('touchstart', stopAuto, { passive: true });
+    track.addEventListener('touchend', () => setTimeout(startAuto, 3000), { passive: true });
+
+    // Update current index on manual scroll
+    track.addEventListener('scroll', () => {
+      current = Math.round(track.scrollLeft / SLIDE_W);
+    }, { passive: true });
+
+    setTimeout(startAuto, 3000); // start after embeds load
   }
 </script>
 </body>
