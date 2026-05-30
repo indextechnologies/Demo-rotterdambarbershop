@@ -118,7 +118,9 @@
     .navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 200; padding: 1.5rem 0; transition: background .35s, padding .3s; }
     .navbar.scrolled { background: rgba(8,8,8,.96); backdrop-filter: blur(20px); padding: 1rem 0; border-bottom: 1px solid var(--border); }
     .nav-inner { display: flex; align-items: center; justify-content: space-between; }
-    .nav-logo { display: flex; flex-direction: column; line-height: 1; }
+    .nav-logo { display: flex; align-items: center; gap: .75rem; line-height: 1; }
+    .nav-logo-img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+    .nav-logo-text { display: flex; flex-direction: column; }
     .nav-logo-name { font-family: var(--font-display); font-size: 1.4rem; letter-spacing: .14em; color: var(--primary); line-height: .9; }
     .nav-logo-sub { font-size: .42rem; letter-spacing: .5em; text-transform: uppercase; color: rgba(237,232,223,.3); margin-top: .3rem; }
     .nav-links { display: flex; gap: 2.2rem; font-family: var(--font-display); font-size: .62rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; }
@@ -341,23 +343,49 @@
     .schedule-row span:first-child { color: var(--muted); }
     .schedule-row span:last-child { font-family: var(--font-display); font-size: .75rem; letter-spacing: .06em; font-weight: 600; color: var(--text); }
 
-    /* ── MAP ── */
-    .map-section { padding: 6rem 0 0; background: var(--bg2); border-top: 1px solid var(--border); }
-    .map-header { margin-bottom: 2.5rem; }
-    .map-wrap { position: relative; }
-    .map-wrap iframe {
-      display: block; width: 100%; height: 440px; border: 0;
-      filter: invert(90%) hue-rotate(180deg) saturate(0.45) brightness(0.92);
+    /* ── IG CAROUSEL ── */
+    .ig-carousel-wrap { position: relative; margin-top: 2.5rem; overflow: hidden; }
+    .ig-carousel-track {
+      display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory;
+      scrollbar-width: none; padding: 0 5% 1.5rem; -ms-overflow-style: none;
     }
-    .map-cta {
-      position: absolute; bottom: 1.2rem; right: 1.2rem;
+    .ig-carousel-track::-webkit-scrollbar { display: none; }
+    .ig-slide { scroll-snap-align: start; flex-shrink: 0; width: 320px; }
+    .ig-slide .instagram-media {
+      background: #000 !important; border: 1px solid var(--border) !important;
+      border-radius: 4px !important; margin: 0 !important; min-width: 300px !important; max-width: 320px !important;
+    }
+    .carousel-btn {
+      position: absolute; top: 45%; transform: translateY(-50%);
       background: rgba(8,8,8,.92); backdrop-filter: blur(12px);
-      border: 1px solid var(--border-lt); border-radius: 2px;
-      padding: .7rem 1.2rem; display: flex; align-items: center; gap: .5rem;
-      font-family: var(--font-display); font-size: .6rem; letter-spacing: .15em;
-      text-transform: uppercase; color: var(--primary); transition: all .2s;
+      border: 1px solid var(--border-lt); color: var(--primary);
+      width: 48px; height: 48px; border-radius: 2px; font-size: 1.5rem;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; z-index: 10; transition: all .2s; font-family: var(--font-sans);
     }
-    .map-cta:hover { border-color: var(--primary); background: rgba(20,20,20,.95); }
+    .carousel-btn:hover { border-color: var(--primary); background: var(--surface); }
+    .carousel-prev { left: 1rem; }
+    .carousel-next { right: 1rem; }
+    @media (max-width: 600px) { .carousel-btn { display: none; } }
+
+    /* ── MAP (FKN STYLE) ── */
+    .map-section { padding: 6rem 0; background: var(--bg2); border-top: 1px solid var(--border); }
+    .map-header { margin-bottom: 3rem; }
+    .map-grid {
+      display: grid; grid-template-columns: 1fr 1.6fr; gap: 3rem; align-items: start;
+    }
+    @media (max-width: 768px) { .map-grid { grid-template-columns: 1fr; } }
+    .map-info { display: flex; flex-direction: column; gap: 1.8rem; }
+    .map-info-block { display: flex; gap: 1rem; align-items: flex-start; }
+    .map-info-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: .1rem; }
+    .map-info-text h4 { font-family: var(--font-display); font-size: .7rem; letter-spacing: .14em; text-transform: uppercase; color: var(--text); margin-bottom: .4rem; }
+    .map-info-text p { font-size: .84rem; color: var(--muted); line-height: 1.75; }
+    .map-info-text a { color: var(--primary); transition: opacity .2s; }
+    .map-info-text a:hover { opacity: .8; }
+    .map-embed { height: 420px; border-radius: 2px; overflow: hidden; border: 1px solid var(--border); }
+    .map-embed iframe { width: 100%; height: 100%; border: 0; display: block; }
+    .map-dark { filter: invert(92%) hue-rotate(180deg) saturate(0.9) brightness(0.85); }
+    @media (max-width: 768px) { .map-embed { height: 300px; } }
 
     /* ── IG STRIP ── */
     .ig-strip { padding: 5rem 0; background: var(--bg); }
@@ -422,14 +450,8 @@
 
 <!-- LOADER -->
 <div id="loader">
-  <div class="loader-scissors">
-    <svg viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="18" cy="18" r="7" stroke="#C9A84C" stroke-width="1.5"/>
-      <circle cx="54" cy="18" r="7" stroke="#C9A84C" stroke-width="1.5"/>
-      <line x1="24" y1="21" x2="52" y2="54" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round"/>
-      <line x1="48" y1="21" x2="20" y2="54" stroke="#C9A84C" stroke-width="1.5" stroke-linecap="round"/>
-      <circle cx="36" cy="38" r="2.5" fill="#C9A84C" opacity=".6"/>
-    </svg>
+  <div class="loader-scissors" style="border-radius:50%;overflow:hidden;width:90px;height:90px;">
+    <img src="logo.png" alt="Rotterdam BarberShop" style="width:100%;height:100%;object-fit:cover;" />
   </div>
   <div class="loader-brand">Barbería Masculina Premium</div>
   <div class="loader-name" data-text="ROTTERDAM">ROTTERDAM</div>
@@ -440,8 +462,11 @@
 <nav class="navbar" id="navbar">
   <div class="container nav-inner">
     <a href="#inicio" class="nav-logo">
-      <span class="nav-logo-name">ROTTERDAM</span>
-      <span class="nav-logo-sub">BarberShop</span>
+      <img src="logo.png" alt="Rotterdam" class="nav-logo-img" />
+      <div class="nav-logo-text">
+        <span class="nav-logo-name">ROTTERDAM</span>
+        <span class="nav-logo-sub">BarberShop</span>
+      </div>
     </a>
     <ul class="nav-links">
       <li><a href="#servicios">Servicios</a></li>
@@ -597,7 +622,7 @@
   </div>
 </div>
 
-<!-- GALERÍA -->
+<!-- GALERÍA / CARRUSEL IG -->
 <section class="gallery" id="galeria">
   <div class="container">
     <div class="gallery-header reveal">
@@ -608,37 +633,38 @@
       </div>
       <a href="https://instagram.com/rotterdambarbershop_" target="_blank" rel="noopener" class="btn btn-ghost">Ver en Instagram →</a>
     </div>
-    <div class="gallery-grid reveal">
-      <div class="g-item g-tall">
-        <img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=600&q=80" alt="Corte de autor" loading="lazy" />
-        <div class="g-overlay"><span class="g-label">Corte Clásico</span></div>
+  </div>
+  <div class="ig-carousel-wrap">
+    <div class="ig-carousel-track" id="carouselTrack">
+      <div class="ig-slide">
+        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DIKIhMTOW1N/" data-instgrm-version="14" style="background:#000;border:1px solid #242424;border-radius:4px;margin:0;max-width:320px;min-width:300px;padding:0;width:100%;"></blockquote>
       </div>
-      <div class="g-item">
-        <img src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=500&q=80" alt="Fade" loading="lazy" />
-        <div class="g-overlay"><span class="g-label">Fade</span></div>
+      <div class="ig-slide">
+        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DIKJJ3CROT5/" data-instgrm-version="14" style="background:#000;border:1px solid #242424;border-radius:4px;margin:0;max-width:320px;min-width:300px;padding:0;width:100%;"></blockquote>
       </div>
-      <div class="g-item">
-        <img src="https://images.unsplash.com/photo-1622286342621-4bd786c2447c?w=500&q=80" alt="Barba" loading="lazy" />
-        <div class="g-overlay"><span class="g-label">Barba</span></div>
+      <div class="ig-slide">
+        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DIKJjCHx-Ez/" data-instgrm-version="14" style="background:#000;border:1px solid #242424;border-radius:4px;margin:0;max-width:320px;min-width:300px;padding:0;width:100%;"></blockquote>
       </div>
-      <div class="g-item">
-        <img src="https://images.unsplash.com/photo-1599351431202-1e0f0137899a?w=500&q=80" alt="Afeitado" loading="lazy" />
-        <div class="g-overlay"><span class="g-label">Afeitado</span></div>
+      <div class="ig-slide">
+        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DIUPXRGuqb9/" data-instgrm-version="14" style="background:#000;border:1px solid #242424;border-radius:4px;margin:0;max-width:320px;min-width:300px;padding:0;width:100%;"></blockquote>
       </div>
-      <div class="g-item">
-        <img src="https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=500&q=80" alt="Degradé" loading="lazy" />
-        <div class="g-overlay"><span class="g-label">Degradé</span></div>
+      <div class="ig-slide">
+        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DIWjEp_sJKx/" data-instgrm-version="14" style="background:#000;border:1px solid #242424;border-radius:4px;margin:0;max-width:320px;min-width:300px;padding:0;width:100%;"></blockquote>
       </div>
-      <div class="g-item">
-        <img src="https://images.unsplash.com/photo-1605497788044-5a32c7078486?w=500&q=80" alt="Barbería" loading="lazy" />
-        <div class="g-overlay"><span class="g-label">Rotterdam</span></div>
+      <div class="ig-slide">
+        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DIWuwK8OeR_/" data-instgrm-version="14" style="background:#000;border:1px solid #242424;border-radius:4px;margin:0;max-width:320px;min-width:300px;padding:0;width:100%;"></blockquote>
       </div>
-      <div class="g-item">
-        <img src="https://images.unsplash.com/photo-1534778101976-62847782c213?w=500&q=80" alt="Detalle" loading="lazy" />
-        <div class="g-overlay"><span class="g-label">Detalle</span></div>
+      <div class="ig-slide">
+        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DP4C5cdDZAl/" data-instgrm-version="14" style="background:#000;border:1px solid #242424;border-radius:4px;margin:0;max-width:320px;min-width:300px;padding:0;width:100%;"></blockquote>
+      </div>
+      <div class="ig-slide">
+        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DQm0QvZj98X/" data-instgrm-version="14" style="background:#000;border:1px solid #242424;border-radius:4px;margin:0;max-width:320px;min-width:300px;padding:0;width:100%;"></blockquote>
       </div>
     </div>
+    <button class="carousel-btn carousel-prev" id="prevBtn" aria-label="Anterior">‹</button>
+    <button class="carousel-btn carousel-next" id="nextBtn" aria-label="Siguiente">›</button>
   </div>
+  <script async src="https://www.instagram.com/embed.js"></script>
 </section>
 
 <!-- NOSOTROS -->
@@ -647,7 +673,7 @@
     <div class="about-grid">
       <div class="about-img-wrap reveal-left">
         <div class="about-img-main">
-          <img src="https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?w=700&q=80" alt="Barbero en acción" />
+          <img src="about.png" alt="Rotterdam BarberShop — Donde el estilo se convierte en arte" />
         </div>
         <div class="about-img-accent">
           <img src="https://images.unsplash.com/photo-1532710093739-9470acff878f?w=400&q=80" alt="Herramientas premium" />
@@ -859,49 +885,67 @@
   </div>
 </section>
 
-<!-- MAPA -->
+<!-- MAPA (FKN STYLE — al final) -->
 <section class="map-section" id="ubicacion">
-  <div class="container map-header reveal">
-    <span class="tag">Ubicación</span>
-    <h2 class="section-title">Encontranos <em>aquí</em></h2>
-    <div class="divider"></div>
-  </div>
-  <div class="map-wrap">
-    <iframe
-      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3439.25!2d-57.56971!3d-25.26696!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x945da78e4bdd84f1%3A0xa5f92662f5e62253!2sRotterdam%20barberShop!5e0!3m2!1ses!2spy!4v1748603000000!5m2!1ses!2spy"
-      width="100%" height="420" style="border:0;" allowfullscreen="" loading="lazy"
-      referrerpolicy="no-referrer-when-downgrade" title="Rotterdam BarberShop — Ubicación">
-    </iframe>
-    <a href="https://www.google.com/maps/place/Rotterdam+barberShop/@-25.2669611,-57.5674215,17z" target="_blank" rel="noopener" class="map-cta">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-      Abrir en Google Maps →
-    </a>
+  <div class="container">
+    <div class="map-header reveal">
+      <span class="tag">Ubicación</span>
+      <h2 class="section-title">Encontranos <em>aquí</em></h2>
+      <div class="divider"></div>
+    </div>
+    <div class="map-grid">
+      <div class="map-info reveal-left">
+        <div class="map-info-block">
+          <div class="map-info-icon">📍</div>
+          <div class="map-info-text">
+            <h4>Dirección</h4>
+            <p>Paraguay<br /><a href="https://www.google.com/maps/place/Rotterdam+barberShop/@-25.2669611,-57.5674215,17z" target="_blank" rel="noopener">Ver en Google Maps →</a></p>
+          </div>
+        </div>
+        <div class="map-info-block">
+          <div class="map-info-icon">🕐</div>
+          <div class="map-info-text">
+            <h4>Horarios</h4>
+            <p>Lun – Vie &nbsp; 10:00 – 20:00<br />Sábados &nbsp;&nbsp;&nbsp; 10:00 – 18:00<br />Domingos &nbsp; Cerrado</p>
+          </div>
+        </div>
+        <div class="map-info-block">
+          <div class="map-info-icon">📲</div>
+          <div class="map-info-text">
+            <h4>Contacto</h4>
+            <p><a href="https://wa.me/595983646919">+595 983 646 919</a><br /><a href="https://instagram.com/rotterdambarbershop_" target="_blank" rel="noopener">@rotterdambarbershop_</a></p>
+          </div>
+        </div>
+        <a href="https://wa.me/595983646919?text=Hola!%20Quiero%20reservar%20en%20Rotterdam%20BarberShop." target="_blank" rel="noopener" class="btn btn-wa" style="align-self:flex-start;margin-top:.5rem">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Reservar ahora
+        </a>
+      </div>
+      <div class="map-embed reveal">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3439.25!2d-57.56971!3d-25.26696!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x945da78e4bdd84f1%3A0xa5f92662f5e62253!2sRotterdam%20barberShop!5e0!3m2!1ses!2spy!4v1748603000000!5m2!1ses!2spy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Rotterdam BarberShop — Google Maps"
+          class="map-dark"
+          allowfullscreen="" loading="lazy">
+        </iframe>
+      </div>
+    </div>
   </div>
 </section>
-
-<!-- IG STRIP -->
-<div class="ig-strip">
-  <div class="ig-header reveal">
-    <span class="tag">Instagram</span>
-    <p style="font-size:.8rem;color:var(--muted);margin-top:.4rem;">@rotterdambarbershop_</p>
-  </div>
-  <div class="ig-grid">
-    <div class="ig-item"><img src="https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=300&q=80" alt="" loading="lazy" /><div class="ig-overlay"></div></div>
-    <div class="ig-item"><img src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?w=300&q=80" alt="" loading="lazy" /><div class="ig-overlay"></div></div>
-    <div class="ig-item"><img src="https://images.unsplash.com/photo-1622286342621-4bd786c2447c?w=300&q=80" alt="" loading="lazy" /><div class="ig-overlay"></div></div>
-    <div class="ig-item"><img src="https://images.unsplash.com/photo-1585747860715-2ba37e788b70?w=300&q=80" alt="" loading="lazy" /><div class="ig-overlay"></div></div>
-    <div class="ig-item"><img src="https://images.unsplash.com/photo-1599351431202-1e0f0137899a?w=300&q=80" alt="" loading="lazy" /><div class="ig-overlay"></div></div>
-    <div class="ig-item"><img src="https://images.unsplash.com/photo-1534778101976-62847782c213?w=300&q=80" alt="" loading="lazy" /><div class="ig-overlay"></div></div>
-  </div>
-</div>
 
 <!-- FOOTER -->
 <footer>
   <div class="container">
     <div class="footer-top">
       <div class="footer-brand">
-        <div class="footer-logo-name">ROTTERDAM</div>
-        <div class="footer-logo-sub">BarberShop</div>
+        <div style="display:flex;align-items:center;gap:.8rem;margin-bottom:.6rem;">
+          <img src="logo.png" alt="Rotterdam" style="width:48px;height:48px;border-radius:50%;object-fit:cover;" />
+          <div>
+            <div class="footer-logo-name">ROTTERDAM</div>
+            <div class="footer-logo-sub">BarberShop</div>
+          </div>
+        </div>
         <p>Un espacio premium exclusivo para caballeros. Precisión, estilo y la mejor atención en cada visita.</p>
       </div>
       <div class="footer-col">
@@ -1055,6 +1099,17 @@
   }
 
   document.getElementById('fecha').min = new Date().toISOString().split('T')[0];
+
+  /* ── CAROUSEL ── */
+  const track = document.getElementById('carouselTrack');
+  if (track) {
+    document.getElementById('prevBtn').addEventListener('click', () => {
+      track.scrollBy({ left: -340, behavior: 'smooth' });
+    });
+    document.getElementById('nextBtn').addEventListener('click', () => {
+      track.scrollBy({ left: 340, behavior: 'smooth' });
+    });
+  }
 </script>
 </body>
 </html>
