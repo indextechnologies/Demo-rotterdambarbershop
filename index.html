@@ -59,8 +59,8 @@
       opacity: 0; animation: logoIn 1s cubic-bezier(.34,1.1,.64,1) .3s forwards;
     }
     .loader-logo-svg {
-      width: 160px; height: 160px;
-      filter: drop-shadow(0 0 28px rgba(201,168,76,.25)) drop-shadow(0 0 60px rgba(168,20,46,.15));
+      width: 220px; height: 220px;
+      filter: drop-shadow(0 0 40px rgba(201,168,76,.3)) drop-shadow(0 0 80px rgba(168,20,46,.18));
     }
     @keyframes logoIn {
       from { opacity: 0; transform: scale(.8); }
@@ -326,44 +326,113 @@
     .schedule-row span:first-child { color: var(--muted); }
     .schedule-row span:last-child { font-family: var(--font-display); font-size: .75rem; letter-spacing: .06em; font-weight: 600; color: var(--text); }
 
-    /* ── IG CAROUSEL ── */
+    /* ── IG CAROUSEL PREMIUM ── */
     .ig-carousel-wrap { position: relative; margin-top: 2.5rem; }
     .ig-carousel-track {
-      display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory;
-      scrollbar-width: none; padding: 0 5% 1.5rem; -ms-overflow-style: none;
+      display: flex; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory;
+      scrollbar-width: none; padding: 0 5% 2rem; -ms-overflow-style: none;
     }
     .ig-carousel-track::-webkit-scrollbar { display: none; }
-    .ig-slide {
-      scroll-snap-align: start; flex-shrink: 0;
-      width: 320px; position: relative; overflow: hidden; border-radius: 4px;
-    }
-    /* Gradient overlay that covers the bottom action bar + likes section */
-    .ig-slide::after {
-      content: ''; pointer-events: none; z-index: 20;
-      position: absolute; bottom: 0; left: 0; right: 0; height: 90px;
-      background: linear-gradient(to top, #000 55%, transparent 100%);
-      border-radius: 0 0 4px 4px;
-    }
-    .ig-slide .instagram-media {
-      background: #000 !important; border: 1px solid var(--border) !important;
-      border-radius: 4px !important; margin: 0 !important;
-      min-width: 300px !important; max-width: 320px !important;
-    }
-    /* Last slide (video) — wider to handle vertical video proportions */
-    .ig-slide.ig-video { width: 360px; }
-    .ig-slide.ig-video .instagram-media { min-width: 340px !important; max-width: 360px !important; }
 
-    .carousel-btn {
-      position: absolute; top: 45%; transform: translateY(-50%);
-      background: rgba(8,8,8,.88); backdrop-filter: blur(12px);
-      border: 1px solid var(--border-lt); color: var(--primary);
-      width: 48px; height: 48px; border-radius: 2px; font-size: 1.6rem; line-height: 1;
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; z-index: 30; transition: all .2s; font-family: var(--font-sans);
+    /* ─ Card ─ */
+    .ig-card {
+      flex-shrink: 0; scroll-snap-align: start;
+      width: 300px; border-radius: 6px; overflow: hidden;
+      background: #080808;
+      border: 1px solid rgba(201,168,76,.12);
+      box-shadow: 0 4px 32px rgba(0,0,0,.6);
+      transition: border-color .35s ease, box-shadow .35s ease;
+      position: relative;
     }
-    .carousel-btn:hover { border-color: var(--primary); background: var(--surface); }
-    .carousel-prev { left: 1rem; }
-    .carousel-next { right: 1rem; }
+    .ig-card:hover {
+      border-color: rgba(201,168,76,.38);
+      box-shadow: 0 8px 48px rgba(0,0,0,.75), 0 0 0 1px rgba(201,168,76,.12);
+    }
+
+    /* ─ Card Header ─ */
+    .ig-card-header {
+      display: flex; align-items: center; gap: 9px;
+      padding: 10px 12px;
+      background: #0A0A0A;
+      border-bottom: 1px solid rgba(255,255,255,.05);
+    }
+    .ig-card-avatar {
+      width: 30px; height: 30px; border-radius: 50%; object-fit: contain; flex-shrink: 0;
+      border: 1.5px solid rgba(201,168,76,.45);
+    }
+    .ig-card-meta { flex: 1; min-width: 0; }
+    .ig-card-username {
+      font-family: var(--font-display); font-size: .58rem; letter-spacing: .07em;
+      color: var(--text); display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .ig-card-handle {
+      font-size: .58rem; color: var(--muted); display: block; margin-top: .05rem;
+    }
+    .ig-card-ig-icon {
+      width: 18px; height: 18px; color: var(--muted); flex-shrink: 0; transition: color .2s;
+    }
+    .ig-card:hover .ig-card-ig-icon { color: var(--primary); }
+
+    /* ─ Card Media (iframe clip) ─ */
+    .ig-card-media {
+      position: relative; overflow: hidden;
+      height: 300px; /* clips the iframe to show only the image */
+      background: #000;
+    }
+    .ig-card-media iframe {
+      width: 100%; height: 400px;
+      border: none; display: block;
+      margin-top: -62px; /* slides the IG header out of view */
+      pointer-events: none; /* hover overlay handles clicks */
+    }
+    /* Bottom micro-fade to cut off any action bar bleed */
+    .ig-card-media::after {
+      content: ''; pointer-events: none; position: absolute;
+      bottom: 0; left: 0; right: 0; height: 32px;
+      background: linear-gradient(to top, #080808 0%, transparent 100%);
+      z-index: 5;
+    }
+    /* Hover overlay */
+    .ig-card-overlay {
+      position: absolute; inset: 0; z-index: 10;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: .6rem; text-decoration: none;
+      background: rgba(0,0,0,0);
+      transition: background .3s ease;
+    }
+    .ig-card:hover .ig-card-overlay { background: rgba(0,0,0,.52); }
+    .ig-overlay-label {
+      display: flex; flex-direction: column; align-items: center; gap: .4rem;
+      opacity: 0; transform: translateY(6px); transition: all .3s ease;
+      color: #fff; font-family: var(--font-display); font-size: .58rem; letter-spacing: .2em;
+      text-transform: uppercase;
+    }
+    .ig-card:hover .ig-overlay-label { opacity: 1; transform: translateY(0); }
+    .ig-overlay-icon { width: 28px; height: 28px; }
+
+    /* ─ Carousel Nav ─ */
+    .carousel-btn {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: rgba(8,8,8,.9); backdrop-filter: blur(16px);
+      border: 1px solid rgba(201,168,76,.25); color: var(--primary);
+      width: 44px; height: 44px; border-radius: 2px; font-size: 1.4rem;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; z-index: 40; transition: all .22s; font-family: var(--font-sans);
+    }
+    .carousel-btn:hover { border-color: var(--primary); background: #141414; }
+    .carousel-prev { left: 1.2rem; }
+    .carousel-next { right: 1.2rem; }
+
+    /* ─ Dot indicators ─ */
+    .carousel-dots {
+      display: flex; justify-content: center; gap: 6px; margin-top: 1.5rem; padding-bottom: .5rem;
+    }
+    .carousel-dot {
+      width: 18px; height: 2px; border-radius: 2px;
+      background: rgba(201,168,76,.2); transition: all .35s ease; cursor: pointer;
+    }
+    .carousel-dot.active { background: var(--primary); width: 32px; }
+
     @media (max-width: 600px) { .carousel-btn { display: none; } }
 
     /* ── MAP (FKN STYLE) ── */
@@ -614,7 +683,7 @@
   </div>
 </div>
 
-<!-- GALERÍA / CARRUSEL IG -->
+<!-- GALERÍA / CARRUSEL IG PREMIUM -->
 <section class="gallery" id="galeria">
   <div class="container">
     <div class="gallery-header reveal">
@@ -623,40 +692,139 @@
         <h2 class="section-title">Nuestro <em>trabajo</em></h2>
         <div class="divider"></div>
       </div>
-      <a href="https://instagram.com/rotterdambarbershop_" target="_blank" rel="noopener" class="btn btn-ghost">Ver en Instagram →</a>
+      <a href="https://instagram.com/rotterdambarbershop_" target="_blank" rel="noopener" class="btn btn-ghost">Ver Instagram →</a>
     </div>
   </div>
+
   <div class="ig-carousel-wrap">
     <div class="ig-carousel-track" id="carouselTrack">
-      <div class="ig-slide">
-        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DIKIhMTOW1N/" data-instgrm-version="14" style="background:#000;border:1px solid #242424;border-radius:4px;margin:0;max-width:320px;min-width:300px;padding:0;width:100%;"></blockquote>
+
+      <!-- Card 1 -->
+      <div class="ig-card">
+        <div class="ig-card-header">
+          <img src="logo.svg" alt="" class="ig-card-avatar" />
+          <div class="ig-card-meta">
+            <span class="ig-card-username">rotterdambarbershop_</span>
+          </div>
+          <svg class="ig-card-ig-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        </div>
+        <div class="ig-card-media">
+          <iframe src="https://www.instagram.com/p/DIKIhMTOW1N/embed/" loading="lazy" scrolling="no" allowtransparency="true"></iframe>
+          <a href="https://www.instagram.com/p/DIKIhMTOW1N/" target="_blank" rel="noopener" class="ig-card-overlay">
+            <div class="ig-overlay-label">
+              <svg class="ig-overlay-icon" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+              Ver en Instagram
+            </div>
+          </a>
+        </div>
       </div>
-      <div class="ig-slide">
-        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DIKJJ3CROT5/" data-instgrm-version="14" style="background:#000;border:1px solid #242424;border-radius:4px;margin:0;max-width:320px;min-width:300px;padding:0;width:100%;"></blockquote>
+
+      <!-- Cards 2–7: same structure, different post codes -->
+      <div class="ig-card">
+        <div class="ig-card-header">
+          <img src="logo.svg" alt="" class="ig-card-avatar" />
+          <div class="ig-card-meta"><span class="ig-card-username">rotterdambarbershop_</span></div>
+          <svg class="ig-card-ig-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        </div>
+        <div class="ig-card-media">
+          <iframe src="https://www.instagram.com/p/DIKJJ3CROT5/embed/" loading="lazy" scrolling="no" allowtransparency="true"></iframe>
+          <a href="https://www.instagram.com/p/DIKJJ3CROT5/" target="_blank" rel="noopener" class="ig-card-overlay"><div class="ig-overlay-label"><svg class="ig-overlay-icon" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>Ver en Instagram</div></a>
+        </div>
       </div>
-      <div class="ig-slide">
-        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DIKJjCHx-Ez/" data-instgrm-version="14" style="background:#000;border:1px solid #242424;border-radius:4px;margin:0;max-width:320px;min-width:300px;padding:0;width:100%;"></blockquote>
+
+      <div class="ig-card">
+        <div class="ig-card-header">
+          <img src="logo.svg" alt="" class="ig-card-avatar" />
+          <div class="ig-card-meta"><span class="ig-card-username">rotterdambarbershop_</span></div>
+          <svg class="ig-card-ig-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        </div>
+        <div class="ig-card-media">
+          <iframe src="https://www.instagram.com/p/DIKJjCHx-Ez/embed/" loading="lazy" scrolling="no" allowtransparency="true"></iframe>
+          <a href="https://www.instagram.com/p/DIKJjCHx-Ez/" target="_blank" rel="noopener" class="ig-card-overlay"><div class="ig-overlay-label"><svg class="ig-overlay-icon" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>Ver en Instagram</div></a>
+        </div>
       </div>
-      <div class="ig-slide">
-        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DIUPXRGuqb9/" data-instgrm-version="14" style="background:#000;border:1px solid #242424;border-radius:4px;margin:0;max-width:320px;min-width:300px;padding:0;width:100%;"></blockquote>
+
+      <div class="ig-card">
+        <div class="ig-card-header">
+          <img src="logo.svg" alt="" class="ig-card-avatar" />
+          <div class="ig-card-meta"><span class="ig-card-username">rotterdambarbershop_</span></div>
+          <svg class="ig-card-ig-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        </div>
+        <div class="ig-card-media">
+          <iframe src="https://www.instagram.com/p/DIUPXRGuqb9/embed/" loading="lazy" scrolling="no" allowtransparency="true"></iframe>
+          <a href="https://www.instagram.com/p/DIUPXRGuqb9/" target="_blank" rel="noopener" class="ig-card-overlay"><div class="ig-overlay-label"><svg class="ig-overlay-icon" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>Ver en Instagram</div></a>
+        </div>
       </div>
-      <div class="ig-slide">
-        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DIWjEp_sJKx/" data-instgrm-version="14" style="background:#000;border:1px solid #242424;border-radius:4px;margin:0;max-width:320px;min-width:300px;padding:0;width:100%;"></blockquote>
+
+      <div class="ig-card">
+        <div class="ig-card-header">
+          <img src="logo.svg" alt="" class="ig-card-avatar" />
+          <div class="ig-card-meta"><span class="ig-card-username">rotterdambarbershop_</span></div>
+          <svg class="ig-card-ig-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        </div>
+        <div class="ig-card-media">
+          <iframe src="https://www.instagram.com/p/DIWjEp_sJKx/embed/" loading="lazy" scrolling="no" allowtransparency="true"></iframe>
+          <a href="https://www.instagram.com/p/DIWjEp_sJKx/" target="_blank" rel="noopener" class="ig-card-overlay"><div class="ig-overlay-label"><svg class="ig-overlay-icon" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>Ver en Instagram</div></a>
+        </div>
       </div>
-      <div class="ig-slide">
-        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DIWuwK8OeR_/" data-instgrm-version="14" style="background:#000;border:1px solid #242424;border-radius:4px;margin:0;max-width:320px;min-width:300px;padding:0;width:100%;"></blockquote>
+
+      <div class="ig-card">
+        <div class="ig-card-header">
+          <img src="logo.svg" alt="" class="ig-card-avatar" />
+          <div class="ig-card-meta"><span class="ig-card-username">rotterdambarbershop_</span></div>
+          <svg class="ig-card-ig-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        </div>
+        <div class="ig-card-media">
+          <iframe src="https://www.instagram.com/p/DIWuwK8OeR_/embed/" loading="lazy" scrolling="no" allowtransparency="true"></iframe>
+          <a href="https://www.instagram.com/p/DIWuwK8OeR_/" target="_blank" rel="noopener" class="ig-card-overlay"><div class="ig-overlay-label"><svg class="ig-overlay-icon" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>Ver en Instagram</div></a>
+        </div>
       </div>
-      <div class="ig-slide">
-        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DP4C5cdDZAl/" data-instgrm-version="14" style="background:#000;border:1px solid #242424;border-radius:4px;margin:0;max-width:320px;min-width:300px;padding:0;width:100%;"></blockquote>
+
+      <div class="ig-card">
+        <div class="ig-card-header">
+          <img src="logo.svg" alt="" class="ig-card-avatar" />
+          <div class="ig-card-meta"><span class="ig-card-username">rotterdambarbershop_</span></div>
+          <svg class="ig-card-ig-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        </div>
+        <div class="ig-card-media">
+          <iframe src="https://www.instagram.com/p/DP4C5cdDZAl/embed/" loading="lazy" scrolling="no" allowtransparency="true"></iframe>
+          <a href="https://www.instagram.com/p/DP4C5cdDZAl/" target="_blank" rel="noopener" class="ig-card-overlay"><div class="ig-overlay-label"><svg class="ig-overlay-icon" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>Ver en Instagram</div></a>
+        </div>
       </div>
-      <div class="ig-slide ig-video">
-        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DQm0QvZj98X/" data-instgrm-version="14" style="background:#000;border:1px solid #242424;border-radius:4px;margin:0;max-width:360px;min-width:340px;padding:0;width:100%;"></blockquote>
+
+      <!-- Card 8 — last video, same fixed dimensions -->
+      <div class="ig-card">
+        <div class="ig-card-header">
+          <img src="logo.svg" alt="" class="ig-card-avatar" />
+          <div class="ig-card-meta"><span class="ig-card-username">rotterdambarbershop_</span></div>
+          <svg class="ig-card-ig-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        </div>
+        <div class="ig-card-media">
+          <iframe src="https://www.instagram.com/p/DQm0QvZj98X/embed/" loading="lazy" scrolling="no" allowtransparency="true"></iframe>
+          <a href="https://www.instagram.com/p/DQm0QvZj98X/" target="_blank" rel="noopener" class="ig-card-overlay"><div class="ig-overlay-label"><svg class="ig-overlay-icon" viewBox="0 0 24 24" fill="white"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>Ver en Instagram</div></a>
+        </div>
       </div>
+
     </div>
+
+    <!-- Nav buttons -->
     <button class="carousel-btn carousel-prev" id="prevBtn" aria-label="Anterior">‹</button>
     <button class="carousel-btn carousel-next" id="nextBtn" aria-label="Siguiente">›</button>
   </div>
-  <script async src="https://www.instagram.com/embed.js"></script>
+
+  <!-- Dot indicators -->
+  <div class="container">
+    <div class="carousel-dots" id="carouselDots">
+      <div class="carousel-dot active" data-idx="0"></div>
+      <div class="carousel-dot" data-idx="1"></div>
+      <div class="carousel-dot" data-idx="2"></div>
+      <div class="carousel-dot" data-idx="3"></div>
+      <div class="carousel-dot" data-idx="4"></div>
+      <div class="carousel-dot" data-idx="5"></div>
+      <div class="carousel-dot" data-idx="6"></div>
+      <div class="carousel-dot" data-idx="7"></div>
+    </div>
+  </div>
 </section>
 
 <!-- NOSOTROS -->
@@ -1086,20 +1254,30 @@
 
   document.getElementById('fecha').min = new Date().toISOString().split('T')[0];
 
-  /* ── CAROUSEL ── */
-  const track = document.getElementById('carouselTrack');
-  if (track) {
-    const slides = track.querySelectorAll('.ig-slide');
-    const SLIDE_W = 336; // slide width + gap
+  /* ── CAROUSEL PREMIUM ── */
+  (function() {
+    const track = document.getElementById('carouselTrack');
+    if (!track) return;
+
+    const cards = track.querySelectorAll('.ig-card');
+    const dots = document.querySelectorAll('.carousel-dot');
+    const CARD_W = 314; // card 300px + gap 14px
     let current = 0;
     let autoTimer;
+    const TOTAL = cards.length;
 
-    function goTo(idx) {
-      current = (idx + slides.length) % slides.length;
-      track.scrollTo({ left: current * SLIDE_W, behavior: 'smooth' });
+    function setActiveDot(idx) {
+      dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+    }
+
+    function goTo(idx, smooth = true) {
+      current = ((idx % TOTAL) + TOTAL) % TOTAL;
+      track.scrollTo({ left: current * CARD_W, behavior: smooth ? 'smooth' : 'instant' });
+      setActiveDot(current);
     }
 
     function startAuto() {
+      stopAuto();
       autoTimer = setInterval(() => goTo(current + 1), 4500);
     }
     function stopAuto() { clearInterval(autoTimer); }
@@ -1107,18 +1285,22 @@
     document.getElementById('prevBtn').addEventListener('click', () => { stopAuto(); goTo(current - 1); startAuto(); });
     document.getElementById('nextBtn').addEventListener('click', () => { stopAuto(); goTo(current + 1); startAuto(); });
 
+    dots.forEach(d => d.addEventListener('click', () => {
+      stopAuto(); goTo(+d.dataset.idx); startAuto();
+    }));
+
+    track.addEventListener('scroll', () => {
+      const idx = Math.round(track.scrollLeft / CARD_W);
+      if (idx !== current) { current = idx; setActiveDot(current); }
+    }, { passive: true });
+
     track.addEventListener('mouseenter', stopAuto);
     track.addEventListener('mouseleave', startAuto);
     track.addEventListener('touchstart', stopAuto, { passive: true });
     track.addEventListener('touchend', () => setTimeout(startAuto, 3000), { passive: true });
 
-    // Update current index on manual scroll
-    track.addEventListener('scroll', () => {
-      current = Math.round(track.scrollLeft / SLIDE_W);
-    }, { passive: true });
-
-    setTimeout(startAuto, 3000); // start after embeds load
-  }
+    setTimeout(startAuto, 2500);
+  })();
 </script>
 </body>
 </html>
